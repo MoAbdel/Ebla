@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EBLA — From the First Groves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --parchment:       #FAF5EC;
+      --parchment-mid:   #F2E9D8;
+      --parchment-dark:  #E8DECA;
+      --terracotta:      #7D3A35;
+      --terracotta-light:#9E4D47;
+      --near-black:      #1A1410;
+      --warm-white:      #FEFCF7;
+      --gold:            #B8892A;
+      --olive-green:     #4A5C2E;
+      --font-display:    'Cormorant Garamond', Georgia, serif;
+      --font-body:       'Jost', system-ui, sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--parchment);
+      color: var(--near-black);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+    .mosaic-divider {
+      width: 100%;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--terracotta) 0px, var(--terracotta) 20px,
+        var(--gold) 20px, var(--gold) 40px,
+        var(--olive-green) 40px, var(--olive-green) 60px,
+        #C4A882 60px, #C4A882 80px,
+        var(--near-black) 80px, var(--near-black) 100px
+      );
+      opacity: 0.7;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--terracotta);
+      color: var(--warm-white);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      transition: background 0.25s ease;
+    }
+    .btn-primary:hover { background: var(--terracotta-light); }
+    .btn-outline {
+      display: inline-block;
+      border: 1px solid currentColor;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 15px 36px;
+      transition: all 0.25s ease;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+    /* ============================================================
+       ANNOUNCEMENT BAR
+    ============================================================ */
+    .announcement {
+      background: var(--near-black);
+      color: var(--parchment-mid);
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--parchment);
+      border-bottom: 1px solid var(--parchment-dark);
+    }
+    .nav-inner {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      height: 72px;
+      padding: 0 40px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--near-black);
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-logo {
+      display: flex;
+      justify-content: center;
+    }
+    .nav-logo img { height: 42px; width: auto; }
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--near-black);
+    }
+    .nav-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-actions a {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .nav-actions a:hover { opacity: 1; }
+    .nav-cart {
+      background: var(--terracotta);
+      color: white !important;
+      opacity: 1 !important;
+      padding: 8px 18px;
+      font-size: 10px !important;
+      letter-spacing: 0.2em !important;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(
+          to bottom,
+          rgba(10, 8, 4, 0.25) 0%,
+          rgba(10, 8, 4, 0.05) 40%,
+          rgba(10, 8, 4, 0.50) 100%
+        ),
+        url('./gemini.PNG');
+      background-size: cover;
+      background-position: center center;
+    }
+    /* Replace .hero-bg with a real olive grove photo in production */
+    .hero-bg-photo {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=1800&q=80');
+      background-size: cover;
+      background-position: center 60%;
+      filter: brightness(0.65) saturate(0.9);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: var(--warm-white);
+      max-width: 800px;
+      padding: 0 40px;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      color: var(--warm-white);
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: #D4B896;
+    }
+    .hero-subhead {
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 44px;
+      line-height: 1.8;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-ctas .btn-outline {
+      color: var(--warm-white);
+      border-color: rgba(255,255,255,0.5);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.45);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      animation: scrollBob 2.5s ease-in-out infinite;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.45), transparent);
+    }
+    @keyframes scrollBob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+    /* Logo overlay in hero */
+    .hero-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .hero-logo img {
+      height: 130px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.92;
+    }
+
+    /* ============================================================
+       TRUST BAND
+    ============================================================ */
+    .trust-band {
+      background: var(--terracotta);
+      color: var(--parchment-mid);
+      padding: 14px 0;
+      overflow: hidden;
+    }
+    .trust-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    .trust-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0 36px;
+    }
+    .trust-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      flex-shrink: 0;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes branchSway {
+      0%   { transform: rotate(0deg); }
+      25%  { transform: rotate(1.5deg); }
+      75%  { transform: rotate(-1.5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* ============================================================
+       PRODUCT SPOTLIGHTS
+    ============================================================ */
+    .spotlight {
+      padding: 100px 0;
+    }
+    .spotlight-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .spotlight-inner.reverse { direction: rtl; }
+    .spotlight-inner.reverse > * { direction: ltr; }
+    .spotlight-image {
+      aspect-ratio: 4/5;
+      background: var(--parchment-dark);
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .spotlight-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, var(--parchment-dark), var(--parchment-mid));
+      color: var(--terracotta);
+      opacity: 0.6;
+      font-family: var(--font-display);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      gap: 12px;
+    }
+    .spotlight-badge {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: var(--near-black);
+      color: var(--parchment);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+    }
+    .spotlight-text { max-width: 460px; }
+    .spotlight-product-type {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 16px;
+    }
+    .spotlight-name {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5vw, 58px);
+      font-weight: 400;
+      line-height: 1.08;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .spotlight-arabic {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--terracotta);
+      margin-bottom: 28px;
+      opacity: 0.7;
+    }
+    .spotlight-desc {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(26,20,16,0.72);
+      margin-bottom: 16px;
+    }
+    .spotlight-notes {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .spotlight-note {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--olive-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .spotlight-note::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--olive-green);
+    }
+    .spotlight-price {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 28px;
+      color: var(--near-black);
+    }
+
+    /* ============================================================
+       STORY SECTION
+    ============================================================ */
+    .story {
+      background: var(--near-black);
+      color: var(--parchment);
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .story-arabic-bg {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 120%;
+      width: auto;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .story-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .story-left .section-label { color: #C4A882; margin-bottom: 20px; display: block; }
+    .story-headline {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 4.5vw, 60px);
+      font-weight: 300;
+      line-height: 1.12;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .story-headline em { font-style: italic; color: #C4A882; }
+    .story-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(250,245,236,0.68);
+      margin-bottom: 36px;
+    }
+    .story-link {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #C4A882;
+      border-bottom: 1px solid rgba(196,168,130,0.4);
+      padding-bottom: 3px;
+      transition: border-color 0.2s;
+    }
+    .story-link:hover { border-color: #C4A882; }
+    .story-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+    .story-pillar {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .story-pillar-num {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--terracotta);
+      line-height: 1;
+    }
+    .story-pillar-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(250,245,236,0.5);
+      margin-bottom: 6px;
+    }
+    .story-pillar-text {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(250,245,236,0.65);
+    }
+
+    /* ============================================================
+       GROVES / ORIGIN
+    ============================================================ */
+    .groves {
+      padding: 100px 0;
+      background: var(--parchment-mid);
+    }
+    .groves-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .groves-image {
+      aspect-ratio: 3/2;
+      background: url('./Grove.PNG') center center / cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+    .groves-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .groves-origin-badge {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(26,20,16,0.82);
+      color: var(--parchment);
+      padding: 20px 28px;
+      backdrop-filter: blur(4px);
+    }
+    .groves-origin-badge .region {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+    }
+    .groves-origin-badge .season {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(250,245,236,0.5);
+      margin-top: 4px;
+    }
+    .groves-text .section-label { margin-bottom: 20px; display: block; }
+    .groves-headline {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .groves-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(26,20,16,0.68);
+      margin-bottom: 36px;
+    }
+    .groves-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+    .groves-stat {
+      border-left: 2px solid var(--terracotta);
+      padding-left: 16px;
+    }
+    .groves-stat-val {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--near-black);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .groves-stat-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(26,20,16,0.5);
+    }
+
+    /* ============================================================
+       PRODUCT GRID
+    ============================================================ */
+    .shop {
+      padding: 100px 0;
+      background: var(--parchment);
+    }
+    .shop-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+    }
+    .shop-headline {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 50px);
+      font-weight: 400;
+      line-height: 1.1;
+    }
+    .shop-all-link {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      border-bottom: 1px solid rgba(125,58,53,0.3);
+      padding-bottom: 3px;
+      transition: border-color 0.2s;
+      white-space: nowrap;
+    }
+    .shop-all-link:hover { border-color: var(--terracotta); }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .product-card {
+      cursor: pointer;
+    }
+    .product-card-image {
+      aspect-ratio: 3/4;
+      background: var(--parchment-mid);
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover .product-card-image { transform: scale(1.015); }
+    .product-card-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(26,20,16,0.3);
+      flex-direction: column;
+      gap: 8px;
+    }
+    .product-card-placeholder .icon { font-size: 32px; opacity: 0.4; }
+    .product-card-info { padding: 0 4px; }
+    .product-card-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .product-card-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(26,20,16,0.55);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .product-card-price {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--near-black);
+    }
+
+    /* ============================================================
+       HOW TO USE
+    ============================================================ */
+    .how {
+      padding: 100px 0;
+      background: var(--near-black);
+      color: var(--parchment);
+    }
+    .how-header { text-align: center; margin-bottom: 56px; }
+    .how-header .section-label { color: #C4A882; margin-bottom: 16px; display: block; }
+    .how-headline {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 4vw, 52px);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+    .how-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .how-tab {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      color: rgba(250,245,236,0.45);
+      border: 1px solid rgba(250,245,236,0.12);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .how-tab.active, .how-tab:hover {
+      color: var(--parchment);
+      border-color: rgba(250,245,236,0.45);
+      background: rgba(250,245,236,0.06);
+    }
+    .how-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .how-image {
+      aspect-ratio: 5/4;
+      background: linear-gradient(135deg, #2C3A1A, #4A3C18) center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+      transition: background-image 0.4s ease;
+    }
+    .how-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+    .how-text .recipe-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .how-text .recipe-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(250,245,236,0.6);
+      margin-bottom: 28px;
+    }
+    .recipe-meta {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .recipe-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .recipe-meta-label { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(250,245,236,0.35); }
+    .recipe-meta-val { font-size: 13px; color: rgba(250,245,236,0.75); }
+
+    /* ============================================================
+       PRESS
+    ============================================================ */
+    .press {
+      padding: 80px 0;
+      background: var(--parchment-dark);
+    }
+    .press--logos-only {
+      padding: 48px 0;
+    }
+    .press-header { text-align: center; margin-bottom: 44px; }
+    .press-header .section-label { margin-bottom: 0; display: block; }
+    .press-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 56px;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+    .press-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: rgba(26,20,16,0.3);
+      font-style: italic;
+    }
+    /* ============================================================
+       REVIEWS SECTION — premium DTC style
+    ============================================================ */
+    .reviews-section {
+      padding: 96px 0 100px;
+      background: #0F130B;
+    }
+    .reviews-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      gap: 40px;
+    }
+    .reviews-aggregate {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .reviews-score {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 400;
+      color: var(--parchment);
+      line-height: 1;
+    }
+    .reviews-score-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .reviews-stars-large {
+      color: #C9A84C;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+    .reviews-count {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+    }
+    .reviews-heading {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 400;
+      color: var(--parchment);
+      margin: 0;
+      text-align: right;
+      line-height: 1.15;
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .review-card {
+      background: #FFFDF8;
+      padding: 36px 32px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .review-card::before {
+      content: '"';
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      font-family: var(--font-display);
+      font-size: 72px;
+      color: rgba(201,168,76,0.15);
+      line-height: 1;
+    }
+    .review-stars {
+      color: #C9A84C;
+      font-size: 14px;
+      letter-spacing: 3px;
+      margin-bottom: 14px;
+    }
+    .review-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--near-black);
+      margin-bottom: 12px;
+    }
+    .review-text {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.65;
+      color: rgba(26,20,16,0.78);
+      flex: 1;
+      margin-bottom: 24px;
+    }
+    .review-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(26,20,16,0.08);
+      padding-top: 16px;
+      gap: 12px;
+    }
+    .review-author {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(26,20,16,0.45);
+    }
+    .review-product-tag {
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6B7C2A;
+      background: rgba(107,124,42,0.1);
+      padding: 4px 9px;
+      white-space: nowrap;
+    }
+    .reviews-cta-row {
+      text-align: center;
+      margin-top: 48px;
+    }
+    .reviews-cta-link {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,232,0.2);
+      padding-bottom: 2px;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .reviews-cta-link:hover {
+      color: var(--parchment);
+      border-color: rgba(245,240,232,0.5);
+    }
+
+    /* ============================================================
+       CULTURAL / HERITAGE SECTION
+    ============================================================ */
+    .cultural {
+      padding: 100px 0;
+      background: var(--parchment);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cultural-arabic-hero {
+      margin: 0 auto 48px;
+      max-width: 600px;
+    }
+    .cultural-arabic-hero img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .cultural-headline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 400;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+    .cultural-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(26,20,16,0.62);
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+    /* Instagram grid mockup */
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 56px;
+    }
+    .insta-cell {
+      aspect-ratio: 1;
+      overflow: hidden;
+    }
+    .insta-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(26,20,16,0.2);
+    }
+    .insta-cell:nth-child(odd) .insta-placeholder { background: var(--parchment-dark); }
+    .insta-cell:nth-child(even) .insta-placeholder { background: var(--parchment-mid); }
+
+    /* ============================================================
+       EMAIL CAPTURE
+    ============================================================ */
+    .email-capture {
+      background: var(--terracotta);
+      color: var(--warm-white);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .email-capture .section-label { color: rgba(255,255,255,0.55); margin-bottom: 16px; display: block; }
+    .email-headline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .email-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 36px;
+      letter-spacing: 0.04em;
+    }
+    .email-form {
+      display: flex;
+      max-width: 480px;
+      margin: 0 auto;
+      gap: 0;
+    }
+    .email-input {
+      flex: 1;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-right: none;
+      color: white;
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      outline: none;
+    }
+    .email-input::placeholder { color: rgba(255,255,255,0.4); }
+    .email-input:focus { background: rgba(255,255,255,0.18); }
+    .email-submit {
+      background: var(--near-black);
+      color: var(--parchment);
+      border: 1px solid var(--near-black);
+      padding: 16px 28px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .email-submit:hover { background: #2C2420; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer {
+      background: var(--near-black);
+      color: var(--parchment);
+      padding: 80px 0 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+    .footer-brand .footer-logo {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+      color: var(--parchment);
+    }
+    .footer-brand .footer-tagline {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-style: italic;
+      color: rgba(250,245,236,0.45);
+      margin-bottom: 28px;
+    }
+    .footer-brand .footer-social {
+      display: flex;
+      gap: 16px;
+    }
+    .footer-social a {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(250,245,236,0.45);
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--parchment); }
+    .footer-col-title {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(250,245,236,0.4);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(250,245,236,0.6);
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .footer-col ul a:hover { color: var(--parchment); }
+    .footer-bottom {
+      border-top: 1px solid rgba(250,245,236,0.1);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(250,245,236,0.3);
+      letter-spacing: 0.06em;
+    }
+    .footer-lang {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-lang a {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(250,245,236,0.35);
+      transition: color 0.2s;
+    }
+    .footer-lang a:hover, .footer-lang a.active { color: var(--parchment); }
+
+    /* ============================================================
+       SCROLL REVEAL (lightweight)
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.32s; }
+
+    /* ============================================================
+       RESPONSIVE (basic mobile)
+    ============================================================ */
+    @media (max-width: 900px) {
+      .nav-inner { grid-template-columns: auto 1fr auto; gap: 20px; }
+      .nav-links { display: none; }
+      .container { padding: 0 24px; }
+      .spotlight-inner, .spotlight-inner.reverse { grid-template-columns: 1fr; direction: ltr; gap: 40px; }
+      .story-inner, .groves-inner, .how-content { grid-template-columns: 1fr; gap: 48px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .reviews-header { flex-direction: column; align-items: flex-start; }
+      .reviews-heading { text-align: left; font-size: 28px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+      .press-logos { gap: 28px; }
+    }
+    @media (max-width: 560px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+      .email-form { flex-direction: column; }
+      .email-input { border-right: 1px solid rgba(255,255,255,0.25); border-bottom: none; }
+      .hero-headline { font-size: 44px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       ANNOUNCEMENT BAR
+  ============================================================ -->
+  <div class="announcement">
+    Free shipping on orders over $75 &nbsp;·&nbsp; First harvest now available
+  </div>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <ul class="nav-links">
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">The Groves</a></li>
+      </ul>
+      <div class="nav-logo">
+        <!-- Using the EBLA wordmark-only asset for nav -->
+        <img
+          src="./EBLA 2/Logo files/PNGs - SVGs/2x/Asset 23@2x.png"
+          alt="EBLA"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        />
+        <span class="nav-logo-text" style="display:none;">EBLA</span>
+      </div>
+      <div class="nav-actions">
+        <a href="#">Recipes</a>
+        <a href="#">Press</a>
+        <a href="#" class="nav-cart">Cart (0)</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <span class="hero-eyebrow">Ebla, Syria · Est. 3000 BC</span>
+
+      <!-- Full logo with olive branch on dark bg -->
+      <div class="hero-logo">
+        <img
+          src="./EBLA 2/Logo files/PNGs - SVGs/2x/Asset 7@2x.png"
+          alt="EBLA — From the First Groves"
+          onerror="this.style.display='none';"
+        />
+      </div>
+
+      <h1 class="hero-headline">
+        From the <em>First</em><br>Groves
+      </h1>
+      <p class="hero-subhead">
+        Pressed from trees that have known a thousand harvests.<br>
+        Traced to the origin of olive oil itself.
+      </p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-primary">Shop Now</a>
+        <a href="#" class="btn-outline">See The Collection</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TRUST BAND
+  ============================================================ -->
+  <div class="trust-band">
+    <div class="trust-track">
+      <!-- Duplicated for seamless loop -->
+      <span class="trust-item">Cold Pressed<span class="trust-dot"></span></span>
+      <span class="trust-item">First Harvest<span class="trust-dot"></span></span>
+      <span class="trust-item">Single Origin<span class="trust-dot"></span></span>
+      <span class="trust-item">Bronze Age Tradition<span class="trust-dot"></span></span>
+      <span class="trust-item">No Additives<span class="trust-dot"></span></span>
+      <span class="trust-item">Traceable to the Grove<span class="trust-dot"></span></span>
+      <span class="trust-item">Low Acidity<span class="trust-dot"></span></span>
+      <span class="trust-item">Handpicked Olives<span class="trust-dot"></span></span>
+      <span class="trust-item">Cold Pressed<span class="trust-dot"></span></span>
+      <span class="trust-item">First Harvest<span class="trust-dot"></span></span>
+      <span class="trust-item">Single Origin<span class="trust-dot"></span></span>
+      <span class="trust-item">Bronze Age Tradition<span class="trust-dot"></span></span>
+      <span class="trust-item">No Additives<span class="trust-dot"></span></span>
+      <span class="trust-item">Traceable to the Grove<span class="trust-dot"></span></span>
+      <span class="trust-item">Low Acidity<span class="trust-dot"></span></span>
+      <span class="trust-item">Handpicked Olives<span class="trust-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PRESS LOGOS (trust signal — before products)
+  ============================================================ -->
+  <section class="press press--logos-only">
+    <div class="container">
+      <div class="press-header reveal">
+        <span class="section-label">As Seen In</span>
+      </div>
+      <div class="press-logos reveal reveal-delay-1">
+        <span class="press-logo">Bon Appétit</span>
+        <span class="press-logo">Food & Wine</span>
+        <span class="press-logo">The New Yorker</span>
+        <span class="press-logo">Eater</span>
+        <span class="press-logo">Saveur</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRODUCT SPOTLIGHT 1
+  ============================================================ -->
+  <section class="spotlight">
+    <div class="container">
+      <div class="spotlight-inner reveal">
+        <div class="spotlight-image">
+          <div class="spotlight-placeholder">
+            [ Product Photography ]
+          </div>
+          <div class="spotlight-badge">First Harvest</div>
+        </div>
+        <div class="spotlight-text">
+          <p class="spotlight-product-type">Extra Virgin · Finishing Oil</p>
+          <h2 class="spotlight-name">The Gold<br>Reserve</h2>
+          <p class="spotlight-arabic">الذهب المحجوز</p>
+          <p class="spotlight-desc">
+            Our finest cold-pressed extra virgin, drawn from the first olives of the season
+            at peak ripeness. Grassy, peppery, and arrestingly fresh — made to be tasted
+            as much as cooked with.
+          </p>
+          <div class="spotlight-notes">
+            <span class="spotlight-note">Grassy</span>
+            <span class="spotlight-note">Peppery Finish</span>
+            <span class="spotlight-note">0.2% Acidity</span>
+          </div>
+          <p class="spotlight-price">$38</p>
+          <a href="#" class="btn-primary">Add to Cart</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mosaic-divider"></div>
+
+  <!-- ============================================================
+       PRODUCT SPOTLIGHT 2
+  ============================================================ -->
+  <section class="spotlight" style="background: var(--parchment-mid); position: relative; overflow: visible;">
+
+    <!-- Large ghost olive sprig — background watermark, right side (mirrors story section treatment) -->
+    <div style="position: absolute; left: 0; top: 20px; bottom: 20px; width: 360px; pointer-events: none; opacity: 0.12; z-index: 0; display: flex; align-items: center; animation: branchSway 8s ease-in-out infinite; transform-origin: bottom center;">
+      <svg width="360" height="100%" viewBox="0 -16 160 296" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-height: 580px;">
+        <path d="M 82 272 C 80 248, 72 220, 74 188 C 76 158, 84 128, 82 96 C 80 68, 76 44, 80 18" stroke="#7D3A35" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M 76 228 C 64 220, 48 214, 30 210" stroke="#7D3A35" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M 30 210 C 16 204, 8 192, 18 186 C 28 180, 36 194, 30 210 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="30" y1="210" x2="18" y2="188" stroke="#7D3A35" stroke-width="0.7" stroke-linecap="round"/>
+        <path d="M 48 214 C 46 204, 52 196, 58 200 C 64 204, 60 214, 48 214 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="48" y1="214" x2="57" y2="200" stroke="#7D3A35" stroke-width="0.7" stroke-linecap="round"/>
+        <line x1="36" y1="217" x2="36" y2="224" stroke="#7D3A35" stroke-width="1.1" stroke-linecap="round"/>
+        <ellipse cx="36" cy="234" rx="7" ry="10" stroke="#7D3A35" stroke-width="1.3" fill="#7D3A35" fill-opacity="0.7"/>
+        <path d="M 36 244 C 36 250, 34 256, 36 260 C 38 264, 40 262, 40 258 C 40 252, 38 246, 36 244 Z" stroke="#7D3A35" stroke-width="1.0" fill="#7D3A35" fill-opacity="0.7"/>
+        <path d="M 78 178 C 90 168, 108 160, 128 156" stroke="#7D3A35" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M 128 156 C 142 148, 150 136, 140 132 C 130 128, 122 142, 128 156 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="128" y1="156" x2="140" y2="133" stroke="#7D3A35" stroke-width="0.7" stroke-linecap="round"/>
+        <path d="M 108 162 C 106 152, 114 146, 120 150 C 126 154, 118 164, 108 162 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="118" y1="163" x2="118" y2="170" stroke="#7D3A35" stroke-width="1.1" stroke-linecap="round"/>
+        <ellipse cx="118" cy="179" rx="6.5" ry="9.5" stroke="#7D3A35" stroke-width="1.3" fill="#7D3A35" fill-opacity="0.7"/>
+        <path d="M 80 128 C 68 120, 52 114, 36 110" stroke="#7D3A35" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M 36 110 C 22 102, 14 90, 24 86 C 34 82, 40 96, 36 110 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="36" y1="110" x2="24" y2="87" stroke="#7D3A35" stroke-width="0.7" stroke-linecap="round"/>
+        <path d="M 52 115 C 50 105, 58 98, 64 103 C 70 108, 62 118, 52 115 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="44" y1="116" x2="44" y2="122" stroke="#7D3A35" stroke-width="1.1" stroke-linecap="round"/>
+        <ellipse cx="44" cy="130" rx="5.5" ry="8" stroke="#7D3A35" stroke-width="1.3" fill="#7D3A35" fill-opacity="0.6"/>
+        <path d="M 80 18 C 70 8, 64 -4, 74 -6 C 84 -8, 86 6, 80 18 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+        <line x1="80" y1="18" x2="74" y2="-4" stroke="#7D3A35" stroke-width="0.7" stroke-linecap="round"/>
+        <path d="M 80 22 C 90 12, 98 2, 90 -2 C 82 -6, 78 8, 80 22 Z" stroke="#7D3A35" stroke-width="1.1" fill="#7D3A35" fill-opacity="0.6"/>
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="spotlight-inner reverse reveal">
+        <div class="spotlight-image">
+          <div class="spotlight-placeholder">
+            [ Product Photography ]
+          </div>
+          <div class="spotlight-badge">Best Seller</div>
+        </div>
+        <div class="spotlight-text">
+          <p class="spotlight-product-type">Extra Virgin · Everyday</p>
+          <h2 class="spotlight-name">The Ancient<br>Grove</h2>
+          <p class="spotlight-arabic">بستان قديم</p>
+          <p class="spotlight-desc">
+            Our everyday oil — robust enough for the highest heat, refined enough
+            to finish a plate. Pressed from century-old trees in the same valleys
+            where olive cultivation was born.
+          </p>
+          <div class="spotlight-notes">
+            <span class="spotlight-note">Buttery</span>
+            <span class="spotlight-note">Mild Pepper</span>
+            <span class="spotlight-note">750 ml</span>
+          </div>
+          <p class="spotlight-price">$28</p>
+          <a href="#" class="btn-primary">Add to Cart</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRODUCT GRID (browse + compare — after spotlights)
+  ============================================================ -->
+  <section class="shop">
+    <div class="container">
+      <div class="shop-header reveal">
+        <h2 class="shop-headline">The Collection</h2>
+        <a href="#" class="shop-all-link">Shop All →</a>
+      </div>
+      <div class="product-grid">
+
+        <div class="product-card reveal">
+          <div class="product-card-image">
+            <div class="product-card-placeholder">
+              <span class="icon">🫒</span>
+              Product Photo
+            </div>
+          </div>
+          <div class="product-card-info">
+            <p class="product-card-name">The Gold Reserve</p>
+            <p class="product-card-desc">First Harvest · Extra Virgin · 500ml</p>
+            <p class="product-card-price">$38</p>
+          </div>
+        </div>
+
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-card-image">
+            <div class="product-card-placeholder">
+              <span class="icon">🫒</span>
+              Product Photo
+            </div>
+          </div>
+          <div class="product-card-info">
+            <p class="product-card-name">The Ancient Grove</p>
+            <p class="product-card-desc">Everyday · Extra Virgin · 750ml</p>
+            <p class="product-card-price">$28</p>
+          </div>
+        </div>
+
+        <div class="product-card reveal reveal-delay-2">
+          <div class="product-card-image">
+            <div class="product-card-placeholder">
+              <span class="icon">🎁</span>
+              Product Photo
+            </div>
+          </div>
+          <div class="product-card-info">
+            <p class="product-card-name">The Founder's Set</p>
+            <p class="product-card-desc">Gold Reserve + Ancient Grove · Gift Box</p>
+            <p class="product-card-price">$62</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       THE STORY
+  ============================================================ -->
+  <section class="story">
+    <div class="container">
+      <div class="story-inner">
+        <div class="story-left reveal">
+          <span class="section-label">Our Heritage</span>
+          <h2 class="story-headline">
+            5,000 years of pressing.<br>
+            <em>Zero shortcuts.</em>
+          </h2>
+          <p class="story-body">
+            The ancient city of Ebla — modern-day Tell Mardikh, Syria — was pressing
+            olives before most civilizations had a written language. Our name is our
+            promise: the same soil, the same craft, the same reverence for the olive
+            that has defined this land for millennia.
+          </p>
+          <p class="story-body">
+            We work exclusively with growers who have tended the same groves for
+            generations. Every bottle is traceable to its grove, its harvest, its press date.
+          </p>
+          <a href="#" class="story-link">Read Our Full Story</a>
+        </div>
+        <div class="story-pillars reveal reveal-delay-2">
+          <div class="story-pillar">
+            <span class="story-pillar-num">01</span>
+            <div>
+              <p class="story-pillar-label">The Origin</p>
+              <p class="story-pillar-text">Ebla was home to some of the earliest documented olive cultivation on earth. We press where history began.</p>
+            </div>
+          </div>
+          <div class="story-pillar">
+            <span class="story-pillar-num">02</span>
+            <div>
+              <p class="story-pillar-label">The Craft</p>
+              <p class="story-pillar-text">Cold-pressed within hours of harvest. No heat. No chemicals. No compromise on the integrity of the fruit.</p>
+            </div>
+          </div>
+          <div class="story-pillar">
+            <span class="story-pillar-num">03</span>
+            <div>
+              <p class="story-pillar-label">The Traceability</p>
+              <p class="story-pillar-text">Every bottle carries a batch code linked to its grove coordinates, harvest date, and pressing record.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large Arabic script decorative element -->
+    <img
+      class="story-arabic-bg"
+      src="./EBLA 2/Logo files/PNGs - SVGs/3x/Asset 1@3x.png"
+      alt=""
+      aria-hidden="true"
+    />
+  </section>
+
+  <!-- ============================================================
+       THE GROVES
+  ============================================================ -->
+  <section class="groves">
+    <div class="container">
+      <div class="groves-inner">
+        <div class="groves-image reveal">
+          <div class="groves-origin-badge">
+            <p class="region">Jabal al-Zawiyah, Syria</p>
+            <p class="season">Harvesting Season · October – December</p>
+          </div>
+        </div>
+        <div class="groves-text reveal reveal-delay-2">
+          <span class="section-label">The Groves</span>
+          <h2 class="groves-headline">We know every tree<br>our olives come from.</h2>
+          <p class="groves-body">
+            Our groves sit in the same hills that surrounded the ancient city of Ebla.
+            The soil is unchanged. The trees are old. The harvest is still done
+            by hand, the same way it has been for a hundred generations.
+          </p>
+          <div class="groves-stats">
+            <div class="groves-stat">
+              <p class="groves-stat-val">300+</p>
+              <p class="groves-stat-label">Year Old Trees</p>
+            </div>
+            <div class="groves-stat">
+              <p class="groves-stat-val">100%</p>
+              <p class="groves-stat-label">Hand Harvested</p>
+            </div>
+            <div class="groves-stat">
+              <p class="groves-stat-val">&lt;4 hrs</p>
+              <p class="groves-stat-label">Harvest to Press</p>
+            </div>
+            <div class="groves-stat">
+              <p class="groves-stat-val">1st</p>
+              <p class="groves-stat-label">Cold Press Only</p>
+            </div>
+          </div>
+          <a href="#" class="btn-primary">Visit The Groves</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW TO USE
+  ============================================================ -->
+  <section class="how">
+    <div class="container">
+      <div class="how-header reveal">
+        <span class="section-label">In The Kitchen</span>
+        <h2 class="how-headline">So many ways to use it.</h2>
+      </div>
+
+      <div class="how-tabs" id="howTabs">
+        <button class="how-tab active" data-tab="raw">Raw</button>
+        <button class="how-tab" data-tab="cooking">Cooking</button>
+        <button class="how-tab" data-tab="finishing">Finishing</button>
+        <button class="how-tab" data-tab="baking">Baking</button>
+        <button class="how-tab" data-tab="gifting">Gifting</button>
+      </div>
+
+      <div class="how-content reveal">
+        <div class="how-image">
+          <div class="how-image-placeholder" id="howImageLabel">[ Recipe Photography ]</div>
+        </div>
+        <div class="how-text">
+          <h3 class="recipe-title" id="howTitle">Za'atar Bread with Gold Reserve</h3>
+          <div class="recipe-meta">
+            <div class="recipe-meta-item">
+              <span class="recipe-meta-label">Oil Used</span>
+              <span class="recipe-meta-val">Gold Reserve</span>
+            </div>
+            <div class="recipe-meta-item">
+              <span class="recipe-meta-label">Prep Time</span>
+              <span class="recipe-meta-val">10 mins</span>
+            </div>
+            <div class="recipe-meta-item">
+              <span class="recipe-meta-label">Best For</span>
+              <span class="recipe-meta-val">Dipping, drizzling</span>
+            </div>
+          </div>
+          <p class="recipe-body" id="howBody">
+            Tear warm flatbread, dip into EBLA Gold Reserve straight from the bottle.
+            Add dried za'atar and a pinch of flake salt. This is how it has been eaten
+            in the Levant for thousands of years — and for good reason.
+          </p>
+          <a href="#" class="btn-outline" style="color: var(--parchment); border-color: rgba(250,245,236,0.3);">View Recipe</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CULTURAL / INSTAGRAM SECTION
+  ============================================================ -->
+  <section class="cultural">
+    <div class="container">
+      <div class="cultural-arabic-hero reveal">
+        <img
+          src="./EBLA 2/Logo files/PNGs - SVGs/2x/Asset 15@2x.png"
+          alt="إبلا"
+          onerror="this.style.display='none';"
+        />
+      </div>
+      <h2 class="cultural-headline reveal">إبلا in every kitchen.</h2>
+      <p class="cultural-body reveal reveal-delay-1">
+        From Beirut to Brooklyn, EBLA is finding its way to tables that know what
+        quality olive oil really means. Share yours.
+      </p>
+      <a href="#" class="btn-primary reveal reveal-delay-2">Follow @ebla.oil</a>
+
+      <div class="insta-grid reveal">
+        <div class="insta-cell"><div class="insta-placeholder">Photo</div></div>
+        <div class="insta-cell"><div class="insta-placeholder">Photo</div></div>
+        <div class="insta-cell"><div class="insta-placeholder">Photo</div></div>
+        <div class="insta-cell"><div class="insta-placeholder">Photo</div></div>
+        <div class="insta-cell"><div class="insta-placeholder">Photo</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EMAIL CAPTURE
+  ============================================================ -->
+  <section class="email-capture">
+    <div class="container">
+      <span class="section-label">Join the Grove</span>
+      <h2 class="email-headline">Be first to the harvest.</h2>
+      <p class="email-sub">New harvests, seasonal releases, recipes, and stories from the groves.</p>
+      <form class="email-form" onsubmit="return false;">
+        <input class="email-input" type="email" placeholder="Your email address" />
+        <button class="email-submit" type="submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">EBLA</div>
+          <p class="footer-tagline">from the first groves</p>
+          <div class="footer-social">
+            <a href="#">Instagram</a>
+            <a href="#">TikTok</a>
+            <a href="#">Twitter</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Shop</p>
+          <ul>
+            <li><a href="#">The Gold Reserve</a></li>
+            <li><a href="#">The Ancient Grove</a></li>
+            <li><a href="#">The Founder's Set</a></li>
+            <li><a href="#">Gift Cards</a></li>
+            <li><a href="#">All Products</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Company</p>
+          <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">The Groves</a></li>
+            <li><a href="#">Recipes</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Wholesale</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Help</p>
+          <ul>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 EBLA. All rights reserved. From the first groves.</p>
+        <div class="footer-lang">
+          <a href="#" class="active">EN</a>
+          <a href="#">عربي</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JS — Scroll Reveal + Tab Interaction
+  ============================================================ -->
+  <script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // Tab interaction
+    const tabData = {
+      raw: {
+        title: "Za'atar Bread with Gold Reserve",
+        body: "Tear warm flatbread, dip into EBLA Gold Reserve straight from the bottle. Add dried za'atar and a pinch of flake salt. This is how it has been eaten in the Levant for thousands of years — and for good reason.",
+        photo: "./recipe-raw.png"
+      },
+      cooking: {
+        title: "Lamb Kofta with Herb Oil",
+        body: "Use The Ancient Grove for the highest heat cooking. Its low acidity and high smoke point make it exceptional for searing, frying, and roasting. The flavor deepens as it cooks.",
+        photo: null
+      },
+      finishing: {
+        title: "Burrata with Gold Reserve & Sea Salt",
+        body: "The finishing oil lives at the end: over fresh burrata, across a warm soup, into a salad dressing. Gold Reserve was made for this moment — its peppery finish brightens everything it touches.",
+        photo: null
+      },
+      baking: {
+        title: "Olive Oil Cake with Orange Zest",
+        body: "Substitute butter with EBLA in any cake recipe for a richer, moister crumb with a subtle fruity note. The Ancient Grove's mild profile works perfectly in sweet applications.",
+        photo: null
+      },
+      gifting: {
+        title: "The Founder's Set",
+        body: "Both oils, in a single handcrafted gift box. Includes a tasting guide, the story of Ebla, and recipe cards. The gift for anyone who cares about what they cook with.",
+        photo: null
+      }
+    };
+
+    const howImage = document.querySelector('.how-image');
+    const howImageLabel = document.getElementById('howImageLabel');
+
+    function setHowImage(tab) {
+      if (tab.photo) {
+        howImage.style.backgroundImage = `url('${tab.photo}')`;
+        howImage.style.backgroundSize = 'cover';
+        howImage.style.backgroundPosition = 'center';
+        howImageLabel.style.display = 'none';
+      } else {
+        howImage.style.backgroundImage = 'linear-gradient(135deg, #2C3A1A, #4A3C18)';
+        howImageLabel.style.display = 'flex';
+        howImageLabel.textContent = `[ ${tab.title} Photography ]`;
+      }
+    }
+
+    // Set Raw as default on load
+    setHowImage(tabData.raw);
+
+    document.getElementById('howTabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('.how-tab');
+      if (!btn) return;
+      document.querySelectorAll('.how-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.dataset.tab;
+      document.getElementById('howTitle').textContent = tabData[key].title;
+      document.getElementById('howBody').textContent = tabData[key].body;
+      setHowImage(tabData[key]);
+    });
+  </script>
+
+</body>
+</html>
